@@ -22,12 +22,13 @@ jobs:
       env:
         MACOSX_DEPLOYMENT_TARGET: 10.11
       run: |
-        brew install nasm acpica
+        brew install nasm acpica mtoc qemu
     
     - name: Build
       env:
         MACOSX_DEPLOYMENT_TARGET: 10.11
       run: |
+        export MACOSX_DEPLOYMENT_TARGET="${{ env.MACOSX_DEPLOYMENT_TARGET }}"
         mkdir output
         make 
         make OpenCoreEFIFolder-master.zip
