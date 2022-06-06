@@ -1,0 +1,28 @@
+From b6eb02fcbd5f9905fcacf511cd2d9ca4018e02b5 Mon Sep 17 00:00:00 2001
+From: "FeRD (Frank Dana)" <ferdnyc@gmail.com>
+Date: Mon, 6 Jun 2022 17:36:34 -0400
+Subject: [PATCH 3/4] MdeModulePkg/AtaAtapiPassThru: Reduce IDE drive detection
+ timeout
+
+This reduces the timeout for a drive response during IDE drive detection in DuetPkg,
+which would otherwise cause an abormally long startup time.
+---
+ MdeModulePkg/Bus/Ata/AtaAtapiPassThru/IdeMode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/IdeMode.c b/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/IdeMode.c
+index 75403886e4..505580c620 100644
+--- a/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/IdeMode.c
++++ b/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/IdeMode.c
+@@ -2394,7 +2394,7 @@ DetectAndConfigIdeDevice (
+     //
+     IdeWritePortB (PciIo, IdeRegisters->CmdOrStatus, ATA_CMD_EXEC_DRIVE_DIAG);
+ 
+-    Status = WaitForBSYClear (PciIo, IdeRegisters, 350000000);
++    Status = WaitForBSYClear (PciIo, IdeRegisters, 5000000);  // Use instead of 350000000.
+     if (EFI_ERROR (Status)) {
+       DEBUG ((DEBUG_ERROR, "New detecting method: Send Execute Diagnostic Command: WaitForBSYClear: Status: %d\n", Status));
+       continue;
+-- 
+2.36.1
+

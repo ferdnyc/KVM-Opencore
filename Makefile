@@ -36,6 +36,7 @@ SUBMODULES = \
 	src/OpenCorePkg/README.md \
 	src/VirtualSMC/README.md \
 	src/OcBinaryData/Resources \
+	src/ocbuild/README.md \
 	src/MacKernelSDK/README.md
 
 # Set me to include the version number in the packaged filenames

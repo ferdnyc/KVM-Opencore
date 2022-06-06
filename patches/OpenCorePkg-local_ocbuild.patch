@@ -1,0 +1,14 @@
+diff --git a/build_oc.tool b/build_oc.tool
+index f681cc7c..6e9d3d2f 100755
+--- a/build_oc.tool
++++ b/build_oc.tool
+@@ -278,7 +278,8 @@ NO_ARCHIVES=0
+ export SELFPKG
+ export NO_ARCHIVES
+ 
+-src=$(curl -Lfs https://raw.githubusercontent.com/acidanthera/ocbuild/master/efibuild.sh) && eval "$src" || exit 1
++#src=$(curl -Lfs https://raw.githubusercontent.com/acidanthera/ocbuild/master/efibuild.sh) && eval "$src" || exit 1
++eval "./efibuild.sh" || exit 1
+ 
+ cd Library/OcConfigurationLib || exit 1
+ ./CheckSchema.py OcConfigurationLib.c || exit 1

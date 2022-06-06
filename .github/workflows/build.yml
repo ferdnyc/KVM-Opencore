@@ -29,10 +29,20 @@ jobs:
         MACOSX_DEPLOYMENT_TARGET: 10.11
       run: |
         export MACOSX_DEPLOYMENT_TARGET="${{ env.MACOSX_DEPLOYMENT_TARGET }}"
-        mkdir output
+        export MTOC_HASH="$(shasum -a 256 $(which mtoc) | cut -d' ' -f1)"
+        make src/OpenCorePkg/README.md
+        make src/ocbuild/README.md
+
+        pushd src/OpenCorePkg >/dev/null
+        patch -p1 < ../../patches/OpenCorePkg-local_ocbuild.patch
+        cp -v ../../efibuild.sh .
+        cp -v ../../patches/000*.patch Patches/
+        popd >/dev/null
+
         make 
         make OpenCoreEFIFolder-master.zip
         make OpenCore-master.dmg
+        mkdir output
         mv OpenCoreEFIFolder-master.zip OpenCore-master.dmg output/
       
     - name: Upload artifact

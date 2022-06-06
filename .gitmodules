@@ -26,3 +26,9 @@
 [submodule "src/BrcmPatchRAM"]
 	path = src/BrcmPatchRAM
 	url = https://github.com/acidanthera/BrcmPatchRAM.git
+[submodule "src/ocbuild"]
+	path = src/ocbuild
+	url = https://github.com/acidanthera/ocbuild.git
+[submodule "src/UDK"]
+	path = src/UDK
+	url = https://github.com/acidanthera/audk
