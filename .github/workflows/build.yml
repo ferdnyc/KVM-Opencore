@@ -5,7 +5,6 @@ on:
 
 jobs:
   build:
-
     runs-on: macos-10.15
 
     steps:
@@ -18,8 +17,16 @@ jobs:
         key: ${{ runner.os }}-build-${{ hashFiles('src/*/README.md') }}
         path: |
           ./src
+
+    - name: Dependencies
+      env:
+        MACOSX_DEPLOYMENT_TARGET: 10.11
+      run: |
+        brew install nasm
     
     - name: Build
+      env:
+        MACOSX_DEPLOYMENT_TARGET: 10.11
       run: |
         mkdir output
         make 
