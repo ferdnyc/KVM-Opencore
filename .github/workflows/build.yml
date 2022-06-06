@@ -22,7 +22,7 @@ jobs:
       env:
         MACOSX_DEPLOYMENT_TARGET: 10.11
       run: |
-        brew install nasm
+        brew install nasm acpica
     
     - name: Build
       env:
