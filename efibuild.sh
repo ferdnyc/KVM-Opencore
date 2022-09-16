@@ -223,6 +223,9 @@ fi
 
 if [ "$NEW_BUILDSYSTEM" != "1" ]; then
   if [ ! -L UDK ]; then
+    if [ -d UDK ]; then
+      rm -rf UDK
+    fi
     ln -s ../UDK UDK
   fi
 fi
