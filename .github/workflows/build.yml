@@ -8,11 +8,11 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v7
 
     - name: Import cache
       id: cache-src
-      uses: actions/cache@v3
+      uses: actions/cache@v6
       with:
         key: ${{ runner.os }}-build-${{ hashFiles('src/*/README.md') }}
         path: |
@@ -46,7 +46,7 @@ jobs:
         mv OpenCoreEFIFolder-master.zip OpenCore-master.dmg output/
       
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v7
       with:
         name: OpenCoreArtifacts
         path: output
