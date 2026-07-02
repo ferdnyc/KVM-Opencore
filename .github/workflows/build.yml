@@ -20,16 +20,15 @@ jobs:
 
     - name: Dependencies
       env:
-        MACOSX_DEPLOYMENT_TARGET: 10.11
+        MACOSX_DEPLOYMENT_TARGET: 10.13
       run: |
-        brew install nasm acpica mtoc qemu
+        brew install nasm acpica qemu
     
     - name: Build
       env:
-        MACOSX_DEPLOYMENT_TARGET: 10.11
+        MACOSX_DEPLOYMENT_TARGET: 10.13
       run: |
         export MACOSX_DEPLOYMENT_TARGET="${{ env.MACOSX_DEPLOYMENT_TARGET }}"
-        export MTOC_HASH="$(shasum -a 256 $(which mtoc) | cut -d' ' -f1)"
         make src/OpenCorePkg/README.md
         make src/ocbuild/README.md
 
