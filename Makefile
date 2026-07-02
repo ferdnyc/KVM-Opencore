@@ -38,7 +38,9 @@ SUBMODULES = \
 	src/VirtualSMC/README.md \
 	src/OcBinaryData/Resources \
 	src/MacKernelSDK/README.md \
-	src/CryptexFixup/README.md
+	src/CryptexFixup/README.md \
+	src/ocbuild/README.md \
+	src/UDK/Readme.rst
 
 # Set me to include the version number in the packaged filenames
 RELEASE_VERSION ?= master
@@ -216,7 +218,7 @@ EFI/OC/Resources : src/OcBinaryData/Resources
 # Fetch submodules:
 
 $(SUBMODULES) :
-	git submodule update --init
+	git submodule update --init --recursive
 
 EFI/BOOT/ EFI/OC/Drivers/ EFI/OC/Tools/ :
 	mkdir $@
@@ -224,8 +226,9 @@ EFI/BOOT/ EFI/OC/Drivers/ EFI/OC/Tools/ :
 # Also check out the UDK and its dependencies from scratch again - useful when build errors occur in UDK
 very-clean : clean
 	rm -rf src/OpenCorePkg/UDK
+	rm -rf src/UDK
 
 clean :
-	rm -rf OpenCore-Image/ src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/UDK/Build src/BrcmPatchRAM/build \
+	rm -rf OpenCore-Image/ src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/UDK/Build src/UDK/Build src/BrcmPatchRAM/build \
 		src/AppleALC/build src/CryptexFixup/build $(KEXTS) $(DRIVERS) $(TOOLS) $(MISC)
 	rm -f OpenCore-${RELEASE_VERSION}.dmg* OpenCore-${RELEASE_VERSION}.iso* OpenCoreEFIFolder-${RELEASE_VERSION}.zip 
