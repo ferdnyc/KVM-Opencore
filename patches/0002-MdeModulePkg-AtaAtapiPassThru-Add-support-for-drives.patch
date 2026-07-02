@@ -1,0 +1,44 @@
+From bb0c14458cb20dafd472f1de43c7795c104e7963 Mon Sep 17 00:00:00 2001
+From: "FeRD (Frank Dana)" <ferdnyc@gmail.com>
+Date: Mon, 6 Jun 2022 17:35:51 -0400
+Subject: [PATCH 2/4] MdeModulePkg/AtaAtapiPassThru: Add support for drives in 
+ RAID mode
+
+This resolves the problem of using drivers connected to Intel G33
+builtin SATA controller when run from DuetPkg when the only configurable
+modes in the BIOS are IDE and RAID.
+
+Signed-off-by: Vitaly Cheptsov <vit9696@protonmail.com>
+---
+ MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.c b/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.c
+index 1070516b35..708ea29074 100644
+--- a/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.c
++++ b/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.c
+@@ -625,7 +625,7 @@ AtaAtapiPassThruSupported (
+     return EFI_UNSUPPORTED;
+   }
+ 
+-  if (IS_PCI_IDE (&PciData) || IS_PCI_SATADPA (&PciData)) {
++  if (IS_PCI_IDE (&PciData) || IS_PCI_SATADPA (&PciData) || IS_PCI_RAID (&PciData)) {
+     return EFI_SUCCESS;
+   }
+ 
+@@ -1226,6 +1226,12 @@ EnumerateAttachedDevice (
+       }
+ 
+       break;
++    case PCI_CLASS_MASS_STORAGE_RAID :
++      Instance->AtaPassThruMode.Attributes &= ~EFI_ATA_PASS_THRU_ATTRIBUTES_PHYSICAL;
++      Instance->ExtScsiPassThruMode.Attributes &= ~EFI_EXT_SCSI_PASS_THRU_ATTRIBUTES_PHYSICAL;
++      //
++      // Fall through to AHCI
++      //
+     case PCI_CLASS_MASS_STORAGE_SATADPA:
+       //
+       // The ATA controller is working at AHCI mode
+-- 
+2.36.1
+

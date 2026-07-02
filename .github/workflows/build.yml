@@ -33,11 +33,11 @@ jobs:
         make src/OpenCorePkg/README.md
         make src/ocbuild/README.md
 
-        pushd src/OpenCorePkg >/dev/null
-        patch -p1 < ../../patches/OpenCorePkg-local_ocbuild.patch
-        cp -v ../../efibuild.sh .
-        cp -v ../../patches/000*.patch Patches/
-        popd >/dev/null
+        #pushd src/OpenCorePkg >/dev/null
+        #patch -p1 < ../../patches/OpenCorePkg-local_ocbuild.patch
+        #cp -v ../../efibuild.sh .
+        #cp -v ../../patches/000*.patch Patches/
+        #popd >/dev/null
 
         make 
         make OpenCoreEFIFolder-master.zip
