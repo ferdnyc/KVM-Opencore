@@ -1,0 +1,52 @@
+name: Build images
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-10.15
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Import cache
+      id: cache-src
+      uses: actions/cache@v3
+      with:
+        key: ${{ runner.os }}-build-${{ hashFiles('src/*/README.md') }}
+        path: |
+          ./src
+
+    - name: Dependencies
+      env:
+        MACOSX_DEPLOYMENT_TARGET: 10.11
+      run: |
+        brew install nasm acpica mtoc qemu
+    
+    - name: Build
+      env:
+        MACOSX_DEPLOYMENT_TARGET: 10.11
+      run: |
+        export MACOSX_DEPLOYMENT_TARGET="${{ env.MACOSX_DEPLOYMENT_TARGET }}"
+        export MTOC_HASH="$(shasum -a 256 $(which mtoc) | cut -d' ' -f1)"
+        make src/OpenCorePkg/README.md
+        make src/ocbuild/README.md
+
+        pushd src/OpenCorePkg >/dev/null
+        patch -p1 < ../../patches/OpenCorePkg-local_ocbuild.patch
+        cp -v ../../efibuild.sh .
+        cp -v ../../patches/000*.patch Patches/
+        popd >/dev/null
+
+        make 
+        make OpenCoreEFIFolder-master.zip
+        make OpenCore-master.dmg
+        mkdir output
+        mv OpenCoreEFIFolder-master.zip OpenCore-master.dmg output/
+      
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: OpenCoreArtifacts
+        path: output
